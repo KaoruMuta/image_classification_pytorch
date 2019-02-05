@@ -11,8 +11,10 @@ By using these scripts, you can also calculate multiple AUC score and confusion 
 
 Please put these scripts and text files on working directory.  
 And you run this following command.  
-`cd data  
-python trainer.py -t -o ./output -b 16 -e 100 -d 100 --lr 0.0001`  
+```
+cd data
+python trainer.py -t -o ./output -b 16 -e 100 -d 100 --lr 0.0001
+```
 
 If you would like to use more useful function, please customize my statement.  
 Maybe it is easy to revise my code.  
