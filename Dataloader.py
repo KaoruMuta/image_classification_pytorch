@@ -1,9 +1,9 @@
 import os
 import sys
 import random
+import torch
 from random import shuffle
 from PIL import Image
-import torch
 from torchvision import transforms
 from torch.utils.data import Dataset, DataLoader
 from enum import Enum
@@ -36,7 +36,7 @@ class MyDataset(Dataset):
 
 	class1, class2...etc -> taking as label
 	'''
-	def __init__(self, split=Data.TRAIN, transform=None):
+	def __init__(self, split = Data.TRAIN, transform = None):
 		self.trainfiles = []
 		self.valfiles = []
 		self.testfiles = []
@@ -53,7 +53,7 @@ class MyDataset(Dataset):
 						break
 		'''
 
-		#When dataloading from textfiles
+		# When dataloading from textfiles
 		with open('train.txt', 'r') as trainfile:
 			self.trainfiles = trainfile.readlines()
 		with open('test.txt', 'r') as testfile:
@@ -67,7 +67,7 @@ class MyDataset(Dataset):
 		for idx, cls in enumerate(self.class_names):
 			self.class_dict[cls] = idx
 
-		#Removing \n
+		# Removing \n
 		for idx in range(len(self.trainfiles)):
 			self.trainfiles[idx] = self.trainfiles[idx].strip()
 		for idx in range(len(self.testfiles)):
@@ -76,7 +76,7 @@ class MyDataset(Dataset):
 			self.valfiles[idx] = self.valfiles[idx].strip()
 
 		random.seed(0) #fixing random seed
-		#If you need to shuffle data, please use it
+		# If you need to shuffle data, please use it
 		shuffle(self.trainfiles)
 		shuffle(self.testfiles)
 		shuffle(self.valfiles)
@@ -104,7 +104,6 @@ class MyDataset(Dataset):
 			label = self.class_dict[file.split(os.sep)[-2]]
 
 			sample = {'data': img, 'label': label}
-
 		elif self.split == Data.TEST:
 			file = self.testfiles[idx]
 			img = Image.open(file)
@@ -114,7 +113,6 @@ class MyDataset(Dataset):
 			label = self.class_dict[file.split(os.sep)[-2]]
 
 			sample = {'data': img, 'label': label}
-
 		elif self.split == Data.VAL:
 			file = self.valfiles[idx]
 			img = Image.open(file)
@@ -131,13 +129,13 @@ if __name__ == '__main__':
 	print('Test if dataloading is working correctly or not')
 
 	dataTransform = transforms.Compose([
-		transforms.RandomResizedCrop(224, scale=(0.7, 1.0)),
+		transforms.RandomResizedCrop(224, scale = (0.7, 1.0)),
 		transforms.RandomHorizontalFlip(),
 		transforms.ToTensor(),
-		transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])])
+		transforms.Normalize(mean = [0.485, 0.456, 0.406], std = [0.229, 0.224, 0.225])])
 
-	dataset = MyDataset('data', split=Data.TRAIN, transform=dataTransform)
-	dataLoader = DataLoader(dataset=dataset, num_workers=0, batch_size=5, shuffle=False)
+	dataset = MyDataset('data', split = Data.TRAIN, transform = dataTransform)
+	dataLoader = DataLoader(dataset = dataset, num_workers = 0, batch_size = 5, shuffle = False)
 
 	for idx, data in enumerate(dataLoader):
 		print('Start loading')
